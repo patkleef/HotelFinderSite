@@ -1,0 +1,72 @@
+﻿<div class="advanced-filters-overlay">
+    <div class="advanced-filters-overlay-inner">
+        <div class="container">
+            <div class="row header-top">
+                <div class="col-md-6 col-xs-8">
+                    <div class="logo">
+                        <a href="/"><img src="~/Images/hotel-logo.png" /><span class="hotel-logo-text">Hotel Finder</span></a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-4">
+                    <div data-bind="click: closeFiltersClicked" class="advanced-filter-close-link pull-right">
+                        <i class="fa fa-times"></i> Close
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="advanced-filters-content">
+            <div class="container">
+                <div class="row advanced-filter-customize-header-row">
+                    <div class="col-md-12 advanced-filter-customize-header">
+                        <h1>Customize your search results</h1>
+                    </div>
+                </div>
+                <div class="row advanced-filters">
+                    <div class="col-md-6">
+                        <div class="advanced-filter price-range-filter">
+                            <div class="advanced-filter-header">Price range</div>
+                            <div class="row">
+                                <div class="col-md-2 col-xs-2">
+                                    <i class="fa fa-usd"></i> 0
+                                </div>
+                                <div class="col-md-7 col-xs-7">
+                                    <div id="price-slider" class="slider"></div>
+                                </div>
+                                <div class="col-md-3 col-xs-3">
+                                    <i class="fa fa-usd"></i> 3000+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advanced-filter ratings-filter">
+                            <div class="advanced-filter-header advanced-filter-header-small-margin">Ratings</div>
+                            <div class="filter-rating-icons">
+                                <i data-rating="1" data-bind="css: { 'filter-rating-selected': ratingFilter() >= 1 }, click: ratingFilterClicked" class="fa fa-star" aria-hidden="true"></i>
+                                <i data-rating="2" data-bind="css: { 'filter-rating-selected': ratingFilter() >= 2 }, click: ratingFilterClicked" class="fa fa-star" aria-hidden="true"></i>
+                                <i data-rating="3" data-bind="css: { 'filter-rating-selected': ratingFilter() >= 3 }, click: ratingFilterClicked" class="fa fa-star" aria-hidden="true"></i>
+                                <i data-rating="4" data-bind="css: { 'filter-rating-selected': ratingFilter() >= 4 }, click: ratingFilterClicked" class="fa fa-star" aria-hidden="true"></i>
+                                <i data-rating="5" data-bind="css: { 'filter-rating-selected': ratingFilter() >= 5 }, click: ratingFilterClicked" class="fa fa-star" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="facilities-filters">
+                            <div class="advanced-filter-header">Facilities</div>
+                            <div class="row" data-bind="foreach: facilityFilters">
+                                <div class="col-md-6 col-xs-6 facility-filter" data-filter="bed" data-bind="click: $parent.facilityFilterClicked, css: { 'facilitiy-filter-active': selected }">
+                                    <i class="facility-icon" data-bind="css: 'fa fa-' + icon"></i>
+                                    <span class="facility-icon-title" data-bind="text: title"></span>
+                                    <i class="fa fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div data-bind="click: applyFiltersClicked" class="col-md-12 apply-filters-link">
+                        Apply filters <i class="fa fa-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿<div class="popup-overlay about-popup">
+    <div class="popup-overlay-inner">
+        <div class="container">
+            <div class="row header-top">
+                <div class="col-md-6 col-xs-8">
+                    <div class="logo">
+                        <a href="/"><img src="~/Images/hotel-logo.png"/><span class="hotel-logo-text">Hotel Finder</span></a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-4">
+                    <div data-bind="click: aboutCloseLinkClicked" class="popup-close-link pull-right">
+                        <i class="fa fa-times"></i> Close
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container about-container">
+            <div class="row">
+                <div class="col-lg-6 about-content">
+                    <h1>About</h1>
+                    <p class="introductiontext">
+                        This site is a result of the <a href="http://world.episerver.com/blogs/Allan-Thran/Dates/2015/3/want-to-try-out-episerver-find-here-is-an-easy-way-and-a-fun-challenge/" target="_blank">coding challenge</a> from Allan Thræn of EPiServer.
+                        Allan bought a database that contains 340.000 hotels. The assignment was to create a site that works on mobile and tablet devices. The site must contain some search functionality build with the use of EPiServer Find.
+                    </p>
+                    <h3>Techniques</h3>
+                    <p>
+                        Below a list of techniques we used.
+                        <ul>
+                            <li>ASP.NET MVC</li>
+                            <li>EPiServer Find</li>
+                            <li>KnockoutJS</li>
+                            <li>RequireJS (AMD)</li>
+                            <li>Bootstrap</li>
+                        </ul>
+                    </p>
+                    <h3>EPiServer Find features</h3>
+                    <p>
+                        <p>For the development of the search functionality we've used a number of cool features (listed below) of EPiServer Find</p>
+                        <ul>
+                            <li>Autocomplete search</li>
+                            <li>Facets</li>
+                            <li>Filtering</li>
+                            <li>Geo search</li>
+                            <li>Paging (infinite scroll)</li>
+                        </ul>
+                    </p>
+                    <h3>Hotel database limitations</h3>
+                    <p>
+                        There were a number of limitations we faced during development.
+                        <ul>
+                            <li>Very low image resolutions (we've resized the images with CSS so it fits in the design)</li>
+                            <li>Some hotels don't have a price</li>
+                            <li>Not so easy to filter on cities</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+            <div class="row about-role-row">
+                <div class="col-lg-2 col-xs-4">
+                    <a href="http://www.patrickvankleef.com" target="_blank">Patrick van Kleef</a>
+                    <p>Development</p>
+                </div>
+                <div class="col-lg-2 col-xs-4">
+                    <a href="http://www.sanderkuypers.com" target="_blank">Sander Kuypers</a>
+                    <p>Design</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

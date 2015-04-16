@@ -1,0 +1,165 @@
+﻿@model Site.Models.HotelViewModel
+@using Site.Business.Images
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.3/jquery.jcarousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.3/jquery.jcarousel-autoscroll.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+}
+
+<div id="hotel-page">
+    <div class="hotel-detail">
+        @{
+            var headerImage = "/Images/hotel-item-image.jpg";
+            if (Model.Hotel.Images.Any())
+            {
+                headerImage = Model.Hotel.Images.First().ImageUrlPath();
+            }
+        }
+        <div class="header-image-background" style="background-image: url('@headerImage');">
+            <div class="header-image">
+                <div class="container">
+                    <div class="row back-to-search">
+                        <div class="col-md-12">
+                            <a href="/"><i class="fa fa-chevron-left"></i> Back to search</a>
+                        </div>
+                    </div>
+                    <div class="row hotel-header-text">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="hotel-location">@string.Format("{0}, {1}", Model.Hotel.Location.Title, Model.Hotel.Location.Country.Title)</div>
+                            <div class="hotel-title">@Model.Hotel.Title</div>
+                            <div class="hotel-rating">
+                                <i class="fa fa-star @(Model.Hotel.StarRating >= 1 ? "active" : string.Empty)"></i>
+                                <i class="fa fa-star @(Model.Hotel.StarRating >= 2 ? "active" : string.Empty)"></i>
+                                <i class="fa fa-star @(Model.Hotel.StarRating >= 3 ? "active" : string.Empty)"></i>
+                                <i class="fa fa-star @(Model.Hotel.StarRating >= 4 ? "active" : string.Empty)"></i>
+                                <i class="fa fa-star @(Model.Hotel.StarRating >= 5 ? "active" : string.Empty)"></i>
+                            </div>
+                            <div class="hotel-price"><i class="fa fa-usd"></i> @Model.Hotel.PriceUSD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hotel-content">
+            <div class="container container-content">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h4>About</h4>
+                        <p class="hotel-description">@Html.Raw(Model.Hotel.Description)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container container-content">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h4>Images</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-2">
+                        <div class="jcarousel-wrapper">
+                            <div class="jcarousel">
+                                <ul>
+                                    @for (var i = 0; i < Model.Hotel.ImageCount; i++)
+                                    {
+                                        <li><img src="@Model.Hotel.Images.ElementAt(i).ImageUrlPath()" /></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container container-content">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 col-xs-12 hotel-facilities">
+                        <h4>Facilities</h4>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-6">
+                                @foreach (var facility in Model.ColumnLeftFacilities)
+                                {
+                                    <div class="hotel-facility"><i class="fa fa-@facility.Icon"></i> <span class="facility-text @(!facility.IsSelected ? "not-available" : string.Empty)">@facility.Title</span></div>
+                                }
+                            </div>
+                            <div class="col-md-4 col-xs-6">
+                                @foreach (var facility in Model.ColumnRightFacilities)
+                                {
+                                    <div class="hotel-facility"><i class="fa fa-@facility.Icon"></i> <span class="facility-text @(!facility.IsSelected ? "not-available" : string.Empty)">@facility.Title</span></div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container container-content">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 hotel-location">
+                        <h4 class="location-h4">Location</h4>
+                        <p>@Model.Hotel.FullAddress</p>
+                        <div id="hotel-map"
+                             data-hotel-title="@Model.Hotel.Title"
+                             data-latitude="@Model.Hotel.GeoCoordinates.Latitude.ToString().Replace(",", ".")"
+                             data-longitude="@Model.Hotel.GeoCoordinates.Longitude.ToString().Replace(",", ".")"
+                             class="hotel-map"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="related-hotels">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 related-hotels-header">
+                    <h3>Hotels in the area</h3>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var hotel in Model.HotelsInArea)
+                {
+                    <div class="col-md-4">
+                        <div class="hotel-result-background-image" style="background-image: url(@hotel.Image);" onclick="window.location='/Hotel?id=' + @hotel.Id">
+                            <div class="hotel-result">
+                                <div class="hotel-result-content">
+                                    <div class="hotel-location">@hotel.Location</div>
+                                    <div class="hotel-title">@hotel.Title</div>
+                                    <div class="hotel-rating">
+                                        <i class="fa fa-star @(hotel.StarRating >= 1 ? "active" : string.Empty)"></i>
+                                        <i class="fa fa-star @(hotel.StarRating >= 2 ? "active" : string.Empty)"></i>
+                                        <i class="fa fa-star @(hotel.StarRating >= 3 ? "active" : string.Empty)"></i>
+                                        <i class="fa fa-star @(hotel.StarRating >= 4 ? "active" : string.Empty)"></i>
+                                        <i class="fa fa-star @(hotel.StarRating >= 5 ? "active" : string.Empty)"></i>
+                                    </div>
+                                    <div class="hotel-price"><i class="fa fa-usd"></i> @hotel.Price</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="hotel-book-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-xs-6">
+                    <div class="footer-back-to-search">
+                        <a href="/"><i class="fa fa-chevron-left"></i> Back to search</a>
+                    </div>
+                </div>
+                <div class="col-md-8  col-xs-6 text-center">
+                    <div class="footer-book-hotel">
+                        <div class="footer-book-hotel-middle">
+                            <a href="@Model.Hotel.Website" target="_blank">Book this hotel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+﻿@model Site.Models.HomeViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="search-results-page" class="outer-container-top">
+    @Html.Partial("~/Views/Shared/About.cshtml")
+    @Html.Partial("~/Views/Shared/AdvancedFilters.cshtml")
+
+<div class="search-top-background">
+    <div class="container header-search-container">
+        <div class="row header-top">
+            <div class="col-md-6 col-xs-8">
+                <div class="logo">
+                    <a href="/"><img src="~/Images/hotel-logo.png" /><span class="hotel-logo-text">Hotel Finder</span></a>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-4">
+                <div data-bind="click: aboutLinkClicked" class="about-link pull-right">
+                    About
+                </div>
+            </div>
+        </div>
+
+        <div class="container search-container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h1 class="search-header">Find the best places to stay.</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="input-group">
+                        <div>
+                            <input type="text" class="form-control search-textfield" id="search-criteria" data-bind="value: searchQuery, event: { 'keyup': searchKeyUp }" placeholder="Where do you want to go?">
+                            <div class="autocomplete-box" data-bind="visible: showAutoCompleteResults">
+                                <ul data-bind="foreach: autocompleteResults">
+                                    <li class="autocomplete-item" data-bind="click:  $parent.autocompleteItemClicked, text: Title, attr: { 'data-value': Title }"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="input-group-btn">
+                            <button id="search-button" type="submit" class="search-button pull-right" data-bind="click: searchButtonClicked">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row search-filters">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="column-center filter-item advanced-search-filter">
+                        <div data-bind="click: advancedFiltersLinkClicked" class="pull-right">
+                            <i class="fa fa-cog"></i> <span class="advances-search-text">Advanced search</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bottom-search" class="container bottom-search">
+        <div class="row" data-bind="foreach: cityFilters">
+            <div class="col-md-2 col-xs-4">
+                <div class="city" data-bind="click: $parent.cityFilterClicked, text: title"></div>
+                <div class="city-hotel-count" data-bind="text: count + ' Hotels'"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="search-results" data-bind="visible: showResults">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="search-results-header">
+                    Search results "<span data-bind="text: searchQuery"></span>"
+                </h2>
+                <h4 class="results-found">We found <span data-bind="text: totalResults"></span> hotels for you</h4>
+            </div>
+        </div>
+        <div class="row results-sort-row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="row">
+                    <div data-sort="price" class="col-md-4 col-xs-4 column-center results-sort" data-bind="click: sortResultsClicked, css: { 'results-sort-active': sortBy() == 'price' }">
+                        <span class="sort-text-underline"><i class="fa fa-usd"></i> Price</span>
+                    </div>
+                    <div data-sort="ratings" class="col-md-4 col-xs-4 column-center results-sort" data-bind="click: sortResultsClicked, css: { 'results-sort-active': sortBy() == 'ratings' }">
+                        <span class="sort-text-underline"><i class="fa fa-star"></i> Ratings</span>
+                    </div>
+                    <div data-sort="popularity" class="col-md-4 col-xs-4 column-center results-sort" data-bind="click: sortResultsClicked, css: { 'results-sort-active': sortBy() == 'popularity' }">
+                        <span class="sort-text-underline"><i class="fa fa-thumbs-up"></i> Popularity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container hotel-results-container">
+        <div class="row" data-bind="template: { foreach: results, afterAdd: showHotelResultItem }">
+            <div class="col-md-4" style="display: none;">
+                <div class="hotel-result-background-image" data-background="" data-bind="attr: { 'data-background': Image, 'data-href': '/Hotel?id=' + Id + ''}" data-href="" onclick=" window.location = $(this).data('href'); ">
+                    <div class="hotel-result">
+                        <div class="hotel-result-content">
+                            <div class="hotel-location" data-bind="text: Location"></div>
+                            <div class="hotel-title" data-bind="text: Title"></div>
+                            <div class="hotel-rating">
+                                <i class="fa fa-star" data-bind="css: { 'hotel-rating-selected': StarRating >= 1 }"></i>
+                                <i class="fa fa-star" data-bind="css: { 'hotel-rating-selected': StarRating >= 2 }"></i>
+                                <i class="fa fa-star" data-bind="css: { 'hotel-rating-selected': StarRating >= 3 }"></i>
+                                <i class="fa fa-star" data-bind="css: { 'hotel-rating-selected': StarRating >= 4 }"></i>
+                                <i class="fa fa-star" data-bind="css: { 'hotel-rating-selected': StarRating >= 5 }"></i>
+                            </div>
+                            <div class="hotel-price">
+                                <i class="fa fa-usd"></i> <span data-bind="text: Price"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile-sort-container" data-bind="css : { 'mobile-sort-visible-container' : showResults}">
+    <div class="container">
+        <div class="row">
+            <div data-sort="price" class="col-xs-4 column-center results-sort" data-bind="click: sortResultsClicked, css: { 'results-sort-active': sortBy() == 'price' }">
+                <div class="mobile-sort-item">
+                    <div class="mobile-sort-item-align-middle">
+                        <span class="glyphicon glyphicon-usd icon-grey" aria-hidden="true"></span> Price
+                    </div>
+                </div>
+            </div>
+            <div data-sort="ratings" class="col-xs-4 column-center results-sort" data-bind="click: sortResultsClicked, css: { 'results-sort-active': sortBy() == 'ratings' }">
+                <div class="mobile-sort-item">
+                    <div class="mobile-sort-item-align-middle">
+                        <span class="glyphicon glyphicon-star icon-grey" aria-hidden="true"></span> Ratings
+                    </div>
+                </div>
+            </div>
+            <div data-sort="popularity" class="col-xs-4 column-center results-sort" data-bind="click: sortResultsClicked, css: { 'results-sort-active': sortBy() == 'popularity' }">
+                <div class="mobile-sort-item">
+                    <div class="mobile-sort-item-align-middle">
+                        <span class="glyphicon glyphicon-heart icon-grey" aria-hidden="true"></span> Popularity
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
